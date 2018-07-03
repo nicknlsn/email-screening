@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <button v-on:click="test()">testing</button>
+        <button v-on:click="chuck()">chuck norris</button>
     </div>
 </template>
 
@@ -14,9 +14,9 @@
             HelloWorld,
         },
     })
-    export default class Home extends Vue {
+    export default class ChuckNorris extends Vue {
 
-        public test() {
+        public chuck() {
             axios.get('/api/v1/test').then((response) => {
             });
         }
