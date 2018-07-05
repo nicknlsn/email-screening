@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <button v-on:click="chuck()">chuck norris</button>
+        <p v-if="joke !== ''">{{joke}}</p>
     </div>
 </template>
 
@@ -16,9 +17,22 @@
     })
     export default class ChuckNorris extends Vue {
 
+        public joke: string;
+
+
+        constructor() {
+            super();
+            this.joke = '';
+        }
+
         public chuck() {
-            axios.get('/api/v1/test').then((response) => {
-            });
+            axios.get('/api/v1/chuck-norris-category', {
+                params: {
+                    category: 'dev',
+                },
+            }).then((response) => {
+                this.joke = response.data;
+            })
         }
     }
 </script>

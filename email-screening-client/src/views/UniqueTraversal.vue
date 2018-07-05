@@ -17,8 +17,6 @@
     export default class UniqueTraversal extends Vue {
 
         public chuck() {
-            axios.get('/api/v1/test').then((response) => {
-            });
         }
     }
 </script>
