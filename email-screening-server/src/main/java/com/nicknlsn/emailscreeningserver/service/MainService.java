@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class MainService {
@@ -23,6 +24,10 @@ public class MainService {
 
         // if the reversed string is the same as the original it is a palindrome
         return new StringBuilder(value.toString()).reverse().toString().equals(value.toString());
+    }
+
+    public List<String> getCategories() {
+        return chuckNorrisApi.getCategories();
     }
 
     public String getRandomJokeByCategory(String category) {

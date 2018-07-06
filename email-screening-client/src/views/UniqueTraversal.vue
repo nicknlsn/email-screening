@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <button v-on:click="chuck()">unique traversal</button>
+        <!--<button v-on:click="chuck()">unique traversal</button>-->
     </div>
 </template>
 
@@ -16,7 +16,5 @@
     })
     export default class UniqueTraversal extends Vue {
 
-        public chuck() {
-        }
     }
 </script>

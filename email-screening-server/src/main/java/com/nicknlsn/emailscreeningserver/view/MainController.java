@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * this controller holds all the endpoints, for a larger api there would be many controllers
@@ -25,6 +26,11 @@ public class MainController implements ApiV1 {
     @GetMapping(value = "integer-palindrome")
     public Boolean integerPalindrome(@RequestParam BigInteger value) {
         return mainService.integerPalindrome(value);
+    }
+
+    @GetMapping(value = "chuck-norris-categories")
+    public List<String> getJokeCategories() {
+        return mainService.getCategories();
     }
 
     @GetMapping(value = "chuck-norris-category")
