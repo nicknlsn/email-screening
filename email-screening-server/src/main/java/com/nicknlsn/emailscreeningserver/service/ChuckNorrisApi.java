@@ -1,6 +1,7 @@
 package com.nicknlsn.emailscreeningserver.service;
 
 import com.nicknlsn.emailscreeningserver.model.ChuckNorrisJoke;
+import com.nicknlsn.emailscreeningserver.model.ChuckNorrisSearchResult;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +47,6 @@ public class ChuckNorrisApi {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .scheme(SCHEME).host(HOST).path("jokes/random").queryParam("category", category).build();
         String url = uriComponents.encode().toUriString();
-        System.out.println(url);
 
         ResponseEntity<ChuckNorrisJoke> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
                 ChuckNorrisJoke.class);
@@ -57,5 +57,18 @@ public class ChuckNorrisApi {
 
     public String query(String query) {
         return null;
+    }
+
+    String jokeSearch(String value) {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .scheme(SCHEME).host(HOST).path("jokes/search").queryParam("query", value).build();
+        String url = uriComponents.toUriString();
+
+        ResponseEntity<ChuckNorrisSearchResult> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity,
+                ChuckNorrisSearchResult.class);
+        ChuckNorrisSearchResult chuckNorrisSearchResult = responseEntity.getBody();
+        ChuckNorrisJoke chuckNorrisJoke = chuckNorrisSearchResult.getResult().get(0); // just get the first one
+
+        return chuckNorrisJoke.getValue();
     }
 }

@@ -1,13 +1,19 @@
 <template>
     <div class="home">
+        <p>Get a random joke by category:</p>
         <select v-model="category" title="select a joke category">
             <option value="select-category">Select category</option>
             <option v-for="categoryOption in categories" v-bind:value="categoryOption">{{categoryOption}}</option>
         </select>
-        <button v-on:click="chuck()">Random joke</button>
+        <button v-on:click="randomJoke()">Random joke</button>
         <p v-if="loadingJoke">Loading joke...</p>
         <p v-if="loadingCategories">Loading categories...</p>
         <p v-if="!loadingJoke && joke !== ''">{{joke}}</p>
+        <p>Search for a joke:</p>
+        <input v-model="searchQuery" placeholder="enter search query"/>
+        <button type="submit" v-on:click="searchJokes()">Search</button>
+        <p v-if="searching">Searching...</p>
+        <p v-if="!searching && searchedJoke !== ''">{{searchedJoke}}</p>
     </div>
 </template>
 
@@ -28,6 +34,9 @@
         public loadingCategories: boolean;
         public categories: string[];
         public category: string;
+        public searchQuery: string;
+        public searchedJoke: string;
+        public searching: boolean;
 
         constructor() {
             super();
@@ -37,6 +46,47 @@
             this.loadCategories();
             this.categories = []; // so vue doesn't complain
             this.category = 'select-category';
+            this.searchQuery = '';
+            this.searchedJoke = '';
+            this.searching = false;
+        }
+
+        public randomJoke() {
+            if (this.category !== 'select-category') {
+                this.loadingJoke = true;
+                axios.get('/api/v1/chuck-norris-category', {
+                    params: {
+                        category: this.category,
+                    },
+                }).then((response) => {
+                    this.joke = response.data;
+                }).catch(() => {
+                    this.joke = 'Chuck Norris is busy, please try again later.';
+                }).then(() => {
+                    this.loadingJoke = false;
+                });
+            } else {
+                this.joke = 'You need to select a category first.';
+            }
+        }
+
+        public searchJokes() {
+            if ('' === this.searchQuery) {
+                this.searchedJoke = 'You need to enter a search query';
+            } else {
+                this.searching = true;
+                axios.get('/api/v1/chuck-norris-joke-search', {
+                    params: {
+                        value: this.searchQuery,
+                    },
+                }).then((response) => {
+                    this.searchedJoke = response.data;
+                }).catch(() => {
+                    this.searchedJoke = 'There was an error, please try again later.';
+                }).then(() => {
+                    this.searching = false;
+                })
+            }
         }
 
         private loadCategories() {
@@ -66,22 +116,6 @@
                 ].forEach((category) => this.categories.push(category));
             }).then(() => {
                 this.loadingCategories = false;
-            });
-        }
-
-        public chuck() {
-            this.loadingJoke = true;
-
-            axios.get('/api/v1/chuck-norris-category', {
-                params: {
-                    category: 'dev',
-                },
-            }).then((response) => {
-                this.joke = response.data;
-            }).catch(() => {
-                this.joke = 'Chuck Norris is busy, please try again later.';
-            }).then(() => {
-                this.loadingJoke = false;
             });
         }
     }

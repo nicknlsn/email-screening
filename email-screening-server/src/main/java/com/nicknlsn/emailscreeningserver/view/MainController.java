@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -38,13 +39,19 @@ public class MainController implements ApiV1 {
         return mainService.getRandomJokeByCategory(category);
     }
 
-    @GetMapping(value = "chuck-norris-joke")
-    public String chuckNorrisJoke(@RequestParam String value) {
-        return null;
+
+    @GetMapping(value = "chuck-norris-joke-search")
+    public String chuckNorrisJokeSearch(@RequestParam String value) {
+        return mainService.chuckNorrisJokeSearch(value);
     }
 
     @GetMapping(value = "unique-traversal")
     public String uniqueTraversal(@RequestParam String value) {
         return null;
+    }
+
+    @GetMapping(value = {"/", "/error", "/login"}, produces = "text/html")
+    public ModelAndView router() {
+        return new ModelAndView("index.html");
     }
 }

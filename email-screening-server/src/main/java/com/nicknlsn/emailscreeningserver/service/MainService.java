@@ -33,4 +33,8 @@ public class MainService {
     public String getRandomJokeByCategory(String category) {
         return chuckNorrisApi.byCategory(category);
     }
+
+    public String chuckNorrisJokeSearch(String value) {
+        return chuckNorrisApi.jokeSearch(value);
+    }
 }
